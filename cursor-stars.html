@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trailing Stars Cursor</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-color: #1e2634;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            pointer-events: none;
+            animation: fade 1s linear forwards;
+        }
+
+        @keyframes fade {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Your site content here -->
+    <script>
+        document.addEventListener('mousemove', (event) => {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.left = `${event.clientX}px`;
+            star.style.top = `${event.clientY}px`;
+
+            // Append to body
+            document.body.appendChild(star);
+
+            // Remove the star after animation
+            star.addEventListener('animationend', () => {
+                star.remove();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-const GRID_SIZE = 20;
+const GRID_SIZE = 18;
 const GAME_SPEED = 100;
 
 class SnakeGame {
@@ -23,7 +23,7 @@ class SnakeGame {
             this.grid[i] = [];
             for (let j = 0; j < GRID_SIZE; j++) {
                 const cell = document.createElement('div');
-                cell.className = 'absolute bg-[#2a3441] border border-[#3a4451]';
+                cell.className = 'absolute bg-[#2a3441]';
                 cell.style.width = `${100 / GRID_SIZE}%`;
                 cell.style.height = `${100 / GRID_SIZE}%`;
                 cell.style.left = `${j * (100 / GRID_SIZE)}%`;
@@ -94,15 +94,32 @@ class SnakeGame {
     updateGrid() {
         for (let i = 0; i < GRID_SIZE; i++) {
             for (let j = 0; j < GRID_SIZE; j++) {
-                this.grid[i][j].className = 'absolute bg-[#2a3441] border border-[#3a4451]';
+                this.grid[i][j].className = 'absolute bg-[#2a3441]';
             }
         }
 
+        const gradients = { 
+            0: 'bg-sky-300',
+            1: 'bg-sky-300/100',
+            2: 'bg-sky-300/95',
+            3: 'bg-sky-300/90',
+            4: 'bg-sky-300/80',
+            5: 'bg-sky-300/75',
+            6: 'bg-sky-300/70',
+            7: 'bg-sky-300/60',
+            8: 'bg-sky-300/50',
+            9: 'bg-sky-300/40',
+            10: 'bg-sky-300/30',
+            11: 'bg-sky-300/25',
+            12: 'bg-sky-300/20',
+        };
+
         this.snake.forEach((segment, index) => {
-            this.grid[segment.y][segment.x].classList.add(index === 0 ? 'bg-green-500' : 'bg-green-300');
+            this.grid[segment.y][segment.x].classList.add(index === 0 ? 'bg-sky-500' : (gradients[index] ?? 'bg-sky-300/20'));
+            this.grid[segment.y][segment.x].classList.add('blur-[1.2px]', 'z-[90]');
         });
 
-        this.grid[this.food.y][this.food.x].classList.add('bg-red-500');
+        this.grid[this.food.y][this.food.x].classList.add('bg-sky-400', 'blur-[1.3px]', 'rounded-full', 'animate-pulse', 'z-[90]');
     }
 
     handleKeyPress(e) {
@@ -119,15 +136,16 @@ class SnakeGame {
     }
 
     endGame() {
+        document.removeEventListener('keydown', (e) => this.handleKeyPress(e));
         clearInterval(this.gameLoop);
         this.showMessage('Game Over!');
     }
 
     showMessage(message) {
         const modal = document.createElement('div');
-        modal.className = 'absolute inset-0 flex items-center justify-center bg-black bg-opacity-50';
+        modal.className = 'absolute inset-0 flex items-center justify-center bg-black opacity-50';
         modal.innerHTML = `
-            <div class="bg-[#2a3441] p-4 rounded shadow-lg">
+            <div class="bg-rose-600 p-4 rounded shadow-lg">
                 <p class="text-xl font-bold mb-2">${message}</p>
                 <p>Your score: ${this.score}</p>
             </div>
